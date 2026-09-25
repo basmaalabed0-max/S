@@ -23,6 +23,7 @@ const stars = $("#stars");
 
 for (let i = 0; i < 75; i++) {
   const star = document.createElement("span");
+
   star.className = "star";
 
   star.style.left = `${Math.random() * 100}%`;
@@ -172,9 +173,7 @@ doors.forEach((door, index) => {
   `;
 
   button.addEventListener("click", () => {
-
     openDoor(door, index);
-
   });
 
   doorGrid.appendChild(button);
@@ -197,11 +196,13 @@ function openDoor(door, index) {
   doorModal.setAttribute("aria-hidden", "false");
 
   if (index === 3) {
+
     doorModalBody.style.animation = "none";
 
     setTimeout(() => {
       doorModalBody.style.animation = "fadeIn 1.2s ease";
     }, 50);
+
   }
 }
 
@@ -217,7 +218,13 @@ function closeDoorModal() {
 $("#closeDoor").addEventListener("click", closeDoorModal);
 $("#closeDoorCta").addEventListener("click", closeDoorModal);
 
+
+/* =========================
+   إغلاق النوافذ بالخلفية
+========================= */
+
 $$(".modal-backdrop").forEach(backdrop => {
+
   backdrop.addEventListener("click", () => {
 
     if (doorModal.classList.contains("show")) {
@@ -229,37 +236,36 @@ $$(".modal-backdrop").forEach(backdrop => {
     }
 
   });
+
 });
 
 
-/*
-  لما تنفتح الأبواب كلها، يظهر زر العجلة.
-*/
+/* =========================
+   فتح الأبواب
+========================= */
 
 const doorButtons = () => $$(".door");
 
 doorButtons().forEach(button => {
+
   button.addEventListener("click", () => {
 
     setTimeout(() => {
 
-      const currentOpenedDoors = doorButtons().filter(
-        door => door.dataset.opened === "true"
-      );
-
-      /*
-        تسجيل الباب كمفتوح بعد الضغط عليه.
-      */
-
       button.dataset.opened = "true";
 
-      if (doorButtons().every(door => door.dataset.opened === "true")) {
+      if (
+        doorButtons().every(
+          door => door.dataset.opened === "true"
+        )
+      ) {
         $("#toWheel").classList.remove("hidden");
       }
 
     }, 50);
 
   });
+
 });
 
 
@@ -269,13 +275,15 @@ $("#toWheel").addEventListener("click", () => {
 
 
 /* =========================
-   العجلة
+   العجلة 🎡
 ========================= */
 
 const wheel = $("#wheelEl");
 const spinButton = $("#spinBtn");
 
+
 const wheelResults = [
+
   {
     icon: "💌",
     label: "رسالة",
@@ -332,100 +340,16 @@ const wheelResults = [
     title: "",
     body: "وصلتي لهون؟ طيب استني… لسه في شي إلك. 👀"
   }
+
 ];
 
-
-/*
-  نتائج الأرقام 1 - 10
-  تركتها مجهزة لأن نصوصها النهائية لم تُثبت بعد.
-  لما نعتمدها بنحطها هون بدون ما نغيّر بقية الموقع.
-*/
-
-const numberResults = {
-  1: "",
-  2: "",
-  3: "",
-  4: "",
-  5: "",
-  6: "",
-  7: "",
-  8: "",
-  9: "",
-  10: ""
-};
-
-
-let wheelRotation = 0;
-let spinning = false;
-let selectedWheelIndex = null;
-
-
-function createWheelLabels() {
-
-  wheelResults.forEach((result, index) => {
-
-    const label = document.createElement("div");
-
-    label.className = "wheel-label";
 
 /* =========================
-   العجلة 🎡
+   نتائج الأرقام
 ========================= */
 
-const wheelResults = [
-  {
-    icon: "💌",
-    label: "رسالة",
-    title: "",
-    body: "بس حبيت أذكّرك إنك أحلى وأحن حد بالكون. 🤍"
-  },
-  {
-    icon: "🫂",
-    label: "طلب",
-    title: "",
-    body: "هسه بدّي منك تبعتيلي صورة لابتسامتك… حتى لو مصطنعة 😂🤌🏻"
-  },
-  {
-    icon: "🌸",
-    label: "مهمة صغيرة",
-    title: "",
-    body: "قومي جيبي إشي بتحبيه وكافئي حالك فيه… بدون تأنيب ضمير 😌"
-  },
-  {
-    icon: "🎲",
-    label: "اختيار غريب",
-    title: "",
-    body: "اختاري رقم من 1 لـ10… وما تسألي ليه 🤨😂",
-    numbers: true
-  },
-  {
-    icon: "💜",
-    label: "رسالة ثانية",
-    title: "",
-    body: "وجودك بحياتي من الأشياء اللي ما بعتبرها عادية أبدًا. 🫂"
-  },
-  {
-    icon: "🎲",
-    label: "حظك اليوم",
-    title: "",
-    body: "حظك اليوم يقول: بكرا ألطف من اليوم… فاستني شوي 🤍"
-  },
-  {
-    icon: "✨",
-    label: "أمنية",
-    title: "",
-    body: "تمني أمنية صغيرة إلك… وما تحكيها لحدا. 🤍"
-  },
-  {
-    icon: "🎁",
-    label: "مفاجأة",
-    title: "",
-    body: "وصلتي لهون؟ طيب استني… لسه في شي إلك. 👀"
-  }
-];
-
-/* كل الأرقام تعطي نفس النتيجة */
 const numberResults = {
+
   1: "ابعتي ريكورد إلي 🤷🏼‍♀️😂",
   2: "ابعتي ريكورد إلي 🤷🏼‍♀️😂",
   3: "ابعتي ريكورد إلي 🤷🏼‍♀️😂",
@@ -436,16 +360,20 @@ const numberResults = {
   8: "ابعتي ريكورد إلي 🤷🏼‍♀️😂",
   9: "ابعتي ريكورد إلي 🤷🏼‍♀️😂",
   10: "ابعتي ريكورد إلي 🤷🏼‍♀️😂"
+
 };
 
-/* الخيارات اللي لسه ما طلعت */
-let remainingWheelIndices = wheelResults.map((_, index) => index);
+
+let remainingWheelIndices =
+  wheelResults.map((_, index) => index);
 
 let wheelRotation = 0;
 let spinning = false;
 let selectedWheelIndex = null;
 
-/* ألوان العجلة */
+
+/* ألوان القطع */
+
 const wheelColors = [
   "#8c4c85",
   "#533a8e",
@@ -457,134 +385,203 @@ const wheelColors = [
   "#57418c"
 ];
 
-/* رسم العجلة حسب الخيارات المتبقية */
+
+/* =========================
+   رسم العجلة
+========================= */
+
 function renderWheel() {
+
   const segmentCount = remainingWheelIndices.length;
 
+  /*
+    إذا خلصت الخيارات كلها
+  */
+
   if (segmentCount === 0) {
+
     wheel.style.background = "#533a8e";
+
+    spinButton.disabled = true;
+
     return;
   }
 
+
   const segmentAngle = 360 / segmentCount;
 
-  const gradientParts = remainingWheelIndices.map((originalIndex, i) => {
-    const start = i * segmentAngle;
-    const end = (i + 1) * segmentAngle;
 
-    return `${wheelColors[originalIndex]} ${start}deg ${end}deg`;
-  });
+  /*
+    بناء ألوان العجلة حسب
+    الخيارات المتبقية
+  */
+
+  const gradientParts =
+    remainingWheelIndices.map((originalIndex, i) => {
+
+      const start = i * segmentAngle;
+      const end = (i + 1) * segmentAngle;
+
+      return `${wheelColors[originalIndex]} ${start}deg ${end}deg`;
+
+    });
+
 
   wheel.style.background =
     `conic-gradient(${gradientParts.join(", ")})`;
 
-  /* نحذف أسماء الخيارات القديمة فقط */
-  wheel.querySelectorAll(".wheel-label").forEach(label => label.remove());
 
-  /* نعيد كتابة الخيارات الموجودة */
+  /*
+    حذف أسماء الخيارات القديمة
+  */
+
+  wheel
+    .querySelectorAll(".wheel-label")
+    .forEach(label => label.remove());
+
+
+  /*
+    إعادة كتابة الخيارات الموجودة
+  */
+
   remainingWheelIndices.forEach((originalIndex, i) => {
+
     const result = wheelResults[originalIndex];
 
     const label = document.createElement("div");
+
     label.className = "wheel-label";
 
-    const angle = i * segmentAngle + segmentAngle / 2;
+
+    const angle =
+      i * segmentAngle +
+      segmentAngle / 2;
+
 
     label.innerHTML = `
       <div>${result.icon}</div>
       <div>${result.label}</div>
     `;
 
+
     label.style.transform =
       `translate(-50%, -50%) rotate(${angle}deg) translateY(-145px) rotate(-${angle}deg)`;
 
+
     wheel.appendChild(label);
+
   });
+
 }
 
+
 /* أول رسم للعجلة */
+
 renderWheel();
 
 
-/* لف العجلة */
+/* =========================
+   لف العجلة
+========================= */
+
 spinButton.addEventListener("click", () => {
-  if (spinning || remainingWheelIndices.length === 0) return;
+
+  if (
+    spinning ||
+    remainingWheelIndices.length === 0
+  ) {
+    return;
+  }
+
 
   spinning = true;
+
   spinButton.disabled = true;
 
-  /* نختار فقط من الخيارات اللي لسه ما طلعت */
-  const randomPosition =
-    Math.floor(Math.random() * remainingWheelIndices.length);
-
-  selectedWheelIndex = remainingWheelIndices[randomPosition];
-
-  const segmentCount = remainingWheelIndices.length;
-  const segmentAngle = 360 / segmentCount;
 
   /*
-    مكان الخيار المختار حاليًا داخل العجلة
-    نحسب مركز القطعة حتى يوقف تحت السهم
+    نختار فقط من الخيارات
+    التي لم تظهر بعد
   */
+
+  const randomPosition =
+    Math.floor(
+      Math.random() *
+      remainingWheelIndices.length
+    );
+
+
+  selectedWheelIndex =
+    remainingWheelIndices[randomPosition];
+
+
+  const segmentCount =
+    remainingWheelIndices.length;
+
+
+  const segmentAngle =
+    360 / segmentCount;
+
+
+  /*
+    زاوية مركز القطعة المختارة
+  */
+
   const targetLocalAngle =
-    360 - (randomPosition * segmentAngle) - (segmentAngle / 2);
+    360 -
+    (randomPosition * segmentAngle) -
+    (segmentAngle / 2);
+
+
+  /*
+    معرفة زاوية العجلة الحالية
+  */
 
   const currentRotation =
     ((wheelRotation % 360) + 360) % 360;
 
+
+  /*
+    مقدار التصحيح حتى تقف القطعة
+    تحت السهم
+  */
+
   const correction =
-    (targetLocalAngle - currentRotation + 360) % 360;
+    (
+      targetLocalAngle -
+      currentRotation +
+      360
+    ) % 360;
+
+
+  /*
+    عدد اللفات الإضافية
+  */
 
   const extraSpins =
     6 + Math.floor(Math.random() * 3);
 
+
   const rotationAmount =
-    extraSpins * 360 + correction;
+    extraSpins * 360 +
+    correction;
+
 
   wheelRotation += rotationAmount;
+
 
   wheel.style.transform =
     `rotate(${wheelRotation}deg)`;
 
-  setTimeout(() => {
-    spinning = false;
-    spinButton.disabled = false;
-
-    showWheelResult(selectedWheelIndex);
-  }, 5200);
-});
-  if (spinning) return;
-
-  spinning = true;
-  spinButton.disabled = true;
 
   /*
-    اختيار عشوائي للخانة.
+    بعد انتهاء الحركة
   */
-
-  selectedWheelIndex = Math.floor(Math.random() * wheelResults.length);
-
-  /*
-    دوران إضافي كبير حتى تكون الحركة واضحة.
-  */
-
-  const extraSpins = 6 + Math.floor(Math.random() * 3);
-
-  /*
-    كل خانة = 45 درجة.
-  */
-
-  const targetAngle =
-    extraSpins * 360 +
-    (360 - selectedWheelIndex * 45 - 22.5);
-
-  wheelRotation += targetAngle;
-
-  wheel.style.transform = `rotate(${wheelRotation}deg)`;
 
   setTimeout(() => {
 
     spinning = false;
+
     spinButton.disabled = false;
 
     showWheelResult(selectedWheelIndex);
@@ -611,97 +608,156 @@ function showWheelResult(index) {
 
   const result = wheelResults[index];
 
-  resultIcon.textContent = result.icon;
-  resultLabel.textContent = result.label;
-  resultTitle.textContent = result.title;
 
-  resultBody.textContent = result.body;
+  resultIcon.textContent =
+    result.icon;
+
+
+  resultLabel.textContent =
+    result.label;
+
+
+  resultTitle.textContent =
+    result.title;
+
+
+  resultBody.textContent =
+    result.body;
+
 
   numberPicker.innerHTML = "";
+
   numberPicker.classList.add("hidden");
+
+
+  /*
+    إذا كانت النتيجة اختيار رقم
+  */
 
   if (result.numbers) {
 
     numberPicker.classList.remove("hidden");
 
+
     for (let i = 1; i <= 10; i++) {
 
-      const numberButton = document.createElement("button");
+      const numberButton =
+        document.createElement("button");
+
 
       numberButton.textContent = i;
 
+
       numberButton.addEventListener("click", () => {
+
         showNumberResult(i);
+
       });
 
+
       numberPicker.appendChild(numberButton);
+
     }
 
   }
 
+
   resultModal.classList.add("show");
-  resultModal.setAttribute("aria-hidden", "false");
+
+  resultModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
 }
 
+
+/* =========================
+   نتيجة الرقم
+========================= */
 
 function showNumberResult(number) {
 
-  const text = numberResults[number];
+  const text =
+    numberResults[number];
 
-  resultLabel.textContent = `رقم ${number} 🎲`;
 
-  /*
-    إذا لسه النتيجة ما انحطت،
-    نخلي الموقع يوضح مكانها بدل ما نخترع نص.
-  */
+  resultLabel.textContent =
+    `رقم ${number} 🎲`;
 
-  if (!text) {
 
-    resultBody.textContent =
-      "هاي النتيجة لسه بدها لمستها الأخيرة 🤍";
+  resultBody.textContent =
+    text;
 
-  } else {
-
-    resultBody.textContent = text;
-
-  }
 
   numberPicker.classList.add("hidden");
+
 }
 
+
+/* =========================
+   إغلاق نتيجة العجلة
+========================= */
 
 function closeResultModal() {
 
   resultModal.classList.remove("show");
-  resultModal.setAttribute("aria-hidden", "true");
+
+  resultModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
 
 }
 
 
 resultContinue.addEventListener("click", () => {
+
   closeResultModal();
 
-  /* نحذف الخيار الذي ظهر من الخيارات المتبقية */
+
+  /*
+    نحذف الخيار الذي ظهر
+    من الخيارات المتبقية
+  */
+
   if (selectedWheelIndex !== null) {
+
     remainingWheelIndices =
-      remainingWheelIndices.filter(index => index !== selectedWheelIndex);
+      remainingWheelIndices.filter(
+        index =>
+          index !== selectedWheelIndex
+      );
+
 
     selectedWheelIndex = null;
 
-    /* نعيد رسم العجلة بالخيارات الباقية */
+
+    /*
+      إعادة رسم العجلة
+      بالخيارات المتبقية فقط
+    */
+
     renderWheel();
+
   }
 
+
   /*
-    إذا خلصت كل الخيارات الثمانية،
-    ننتقل للمرحلة التالية
+    إذا خلصت كل الخيارات الثمانية
   */
-  if (remainingWheelIndices.length === 0) {
+
+  if (
+    remainingWheelIndices.length === 0
+  ) {
+
     setTimeout(() => {
+
       $("#toBreath").classList.remove("hidden");
+
     }, 400);
+
   }
-});
 
 });
 
@@ -749,8 +805,8 @@ toLetter.addEventListener("click", () => {
 
 
 /*
-  إذا الفيديو انقطع أو خلص،
-  يظل زر الانتقال متاحًا بعد الضغط عليه.
+  إذا حصل خطأ في الفيديو،
+  يظل زر الانتقال متاحًا
 */
 
 video.addEventListener("error", () => {
@@ -767,35 +823,49 @@ video.addEventListener("error", () => {
 const finalParagraphs = [
 
   {
-    text: "إذا أصابـكِ ضـيق، سـتجدني أنا وقـلبي نتـسع لـكِ دائمـاً.. 💜🫂",
+    text:
+      "إذا أصابـكِ ضـيق، سـتجدني أنا وقـلبي نتـسع لـكِ دائمـاً.. 💜🫂",
     strong: true
   },
 
   {
-    text: "أتمنى أكون قدرت ولو بشيء بسيط إني أغيرلك جو ويكون عجبك، مع إني يعني لا بقدم ولا بأخر… بس ما بحب أشوفك زعلانة."
+    text:
+      "أتمنى أكون قدرت ولو بشيء بسيط إني أغيرلك جو ويكون عجبك، مع إني يعني لا بقدم ولا بأخر… بس ما بحب أشوفك زعلانة."
   },
 
   {
-    text: "وأنا عارفة إنو مش بإيدك الزعل، بس يعني… بعرفش أشوفك زعلانة وخلص. 🫂"
+    text:
+      "وأنا عارفة إنو مش بإيدك الزعل، بس يعني… بعرفش أشوفك زعلانة وخلص. 🫂"
   },
 
   {
-    text: "ويمكن مش بعمل إشي يخليكي أحسن، وإنتِ قلتي ما بدك حد ومش جعبالك، بس برضو إنتِ مش أي حد.",
+    text:
+      "ويمكن مش بعمل إشي يخليكي أحسن، وإنتِ قلتي ما بدك حد ومش جعبالك، بس برضو إنتِ مش أي حد.",
     strong: true
   },
 
   {
-    text: "وبحاول يعني إني، حتى لو مش قريبة أو عندك، يعني هو صعب… بس بحاول إني أكون وقت ما بدك. 💜",
+    text:
+      "وبحاول يعني إني، حتى لو مش قريبة أو عندك، يعني هو صعب… بس بحاول إني أكون وقت ما بدك. 💜",
     strong: true
   },
 
   {
-    text: "فالله يسعدك ويهون عليكي، وتضلي مطمّنة دايمًا، وربنا يحفظك بعينه اللي ما بتنام."
+    text:
+      "فالله يسعدك ويهون عليكي، وتضلي مطمّنة دايمًا، وربنا يحفظك بعينه اللي ما بتنام."
   },
 
   {
-    text: "واستودعتك الله الذي لا تضيع ودائعه. 🙏💜"
+    text:
+      "واستودعتك الله الذي لا تضيع ودائعه. 🙏💜"
+  },
+
+  {
+    text:
+      "وبس والله… لف يو 🫂",
+    strong: true
   }
+
 ];
 
 
@@ -806,32 +876,50 @@ function startLetter() {
 
   if (letterStarted) return;
 
+
   letterStarted = true;
+
 
   const letterText = $("#letterText");
   const letterCard = $("#letterCard");
   const letterEnd = $("#letterEnd");
 
+
   letterText.innerHTML = "";
+
 
   letterCard.classList.add("visible");
 
+
   let delay = 600;
 
-  finalParagraphs.forEach((paragraph, index) => {
+
+  finalParagraphs.forEach(paragraph => {
 
     const p = document.createElement("p");
 
+
     p.className =
-      `letter-paragraph${paragraph.strong ? " strong" : ""}`;
+      `letter-paragraph${
+        paragraph.strong ? " strong" : ""
+      }`;
 
-    p.textContent = paragraph.text;
 
-    p.style.animationDelay = `${delay}ms`;
+    p.textContent =
+      paragraph.text;
+
+
+    p.style.animationDelay =
+      `${delay}ms`;
+
 
     letterText.appendChild(p);
 
-    delay += paragraph.strong ? 2300 : 1700;
+
+    delay +=
+      paragraph.strong
+        ? 2300
+        : 1700;
 
   });
 
@@ -853,7 +941,9 @@ document.addEventListener("keydown", event => {
 
   if (event.key !== "Escape") return;
 
+
   closeDoorModal();
+
   closeResultModal();
 
 });
